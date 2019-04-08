@@ -1,6 +1,16 @@
 # fileUploader
 文件上传下载助手
 
+使用方式:
+复制一下代码, sh执行:
+
+```
+wget https://github.com/wenlaizhou/fileUploader/raw/master/boot.go && go build -v
+```
+./编译之后的可执行文件即可启动服务
+
+启动服务之后, 即创建http上传下载服务, 首页即为文件列表页面
+
 上传文件方式:
 ```
 curl http://ip:port/doupload -F "file=@文件名"
