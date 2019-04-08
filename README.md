@@ -1,13 +1,14 @@
 # fileUploader
 文件上传下载助手
 
+本服务无任何依赖, 只有一个可执行文件
+
 使用方式:
-复制一下代码, sh执行:
+复制以下代码, sh执行 (端口可以改为自己想监听的端口):
 
 ```
-wget https://github.com/wenlaizhou/fileUploader/raw/master/boot.go && go build -v
+wget https://github.com/wenlaizhou/fileUploader/raw/master/uploader && nohup ./uploader 80 > console.log 2>&1 & 
 ```
-./编译之后的可执行文件即可启动服务
 
 启动服务之后, 即创建http上传下载服务, 首页即为文件列表页面
 
