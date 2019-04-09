@@ -10,6 +10,12 @@
 wget https://github.com/wenlaizhou/fileUploader/raw/master/uploader && chmod +x uploader && nohup ./uploader 80 > console.log 2>&1 & 
 ```
 
+单独下载可执行文件:
+
+```bash
+wget https://github.com/wenlaizhou/fileUploader/raw/master/uploader
+```
+
 启动服务之后, 即创建http上传下载服务, 首页即为文件列表页面
 
 上传文件方式:
