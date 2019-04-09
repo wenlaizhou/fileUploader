@@ -174,13 +174,23 @@ func main() {
 	}
 	println("启动服务:")
 	println("http://" + netAddr + port)
+
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Access-Control-Allow-Origin", "*")
+		writer.Header().Set("Access-Control-Allow-Methods", "POST,GET,OPTIONS,DELETE")
+		writer.Header().Set("Access-Control-Allow-Headers", "*")
+		if strings.ToUpper(request.Method) == "OPTIONS" {
+			writer.WriteHeader(202)
+			return
+		}
 		http.ServeFile(writer, request, dir+request.URL.Path)
 	})
+
 	http.HandleFunc("/upload", func(writer http.ResponseWriter, request *http.Request) {
 		_, _ = writer.Write([]byte(uploadUi))
 		return
 	})
+
 	http.HandleFunc("/doupload", func(writer http.ResponseWriter, request *http.Request) {
 		fs, fsHeader, err := request.FormFile("file")
 		if err != nil {
@@ -197,6 +207,7 @@ func main() {
 		http.Redirect(writer, request, "/", http.StatusFound)
 		return
 	})
+
 	log.Fatal(http.ListenAndServe(port, nil))
 }
 
