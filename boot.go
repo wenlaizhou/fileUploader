@@ -7,7 +7,6 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -131,22 +130,11 @@ var uploadUi = `<!DOCTYPE html>
 </html>
 `
 
-// SelfPath gets compiled executable file absolute Path
 func SelfPath() string {
 	selfPath, _ := filepath.Abs(os.Args[0])
 	return selfPath
 }
 
-// get absolute filepath, based on built executable file
-func RealPath(fp string) (string, error) {
-	if path.IsAbs(fp) {
-		return fp, nil
-	}
-	wd, err := os.Getwd()
-	return path.Join(wd, fp), err
-}
-
-// SelfDir gets compiled executable file directory
 func SelfDir() string {
 	return filepath.Dir(SelfPath())
 }
@@ -157,10 +145,17 @@ var selfDir = SelfDir()
 
 func main() {
 	dir := SelfDir()
-	fmt.Println("当前目录: ", dir)
 	port := ":8080"
-	if len(os.Args) > 1 {
+	switch len(os.Args) {
+	case 2:
 		port = fmt.Sprintf(":%v", os.Args[1])
+		break
+	case 3:
+		port = fmt.Sprintf(":%v", os.Args[1])
+		dir = fmt.Sprintf("%v", os.Args[2])
+		break
+	default:
+		break
 	}
 	addrs, _ := net.InterfaceAddrs()
 	netAddr := ""
@@ -172,6 +167,7 @@ func main() {
 			break
 		}
 	}
+	fmt.Println("服务目录: ", dir)
 	println("启动服务:")
 	println("http://" + netAddr + port)
 
