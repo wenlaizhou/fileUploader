@@ -4,13 +4,8 @@
 本服务无任何依赖, 只有一个可执行文件
 
 使用方式:
-复制以下代码, sh执行 (80端口可以改为自己想监听的端口):
 
-```bash
-wget https://github.com/wenlaizhou/fileUploader/raw/master/uploader && chmod +x uploader && nohup ./uploader 80 > console.log 2>&1 & 
-```
-
-单独下载可执行文件:
+下载可执行文件:
 
 ```bash
 wget https://github.com/wenlaizhou/fileUploader/raw/master/uploader && chmod +x uploader
