@@ -148,6 +148,14 @@ func main() {
 	port := ":8080"
 	switch len(os.Args) {
 	case 2:
+		if os.Args[1] == "-h" || os.Args[1] == "--help" {
+			println("使用说明:")
+			println("nohup ./uploader $port $path > uploader.log 2>&1 &")
+			println("第一个参数为端口号, 默认为8080")
+			println("第二个参数为文件目录, 默认为当前目录")
+			println("")
+			return
+		}
 		port = fmt.Sprintf(":%v", os.Args[1])
 		break
 	case 3:
