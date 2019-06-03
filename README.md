@@ -13,6 +13,12 @@ wget https://github.com/wenlaizhou/fileUploader/raw/master/uploader && chmod +x 
 
 启动服务之后, 即创建http上传下载服务, 首页即为文件列表页面
 
+启动命令:
+
+```
+./uploader 8080 $(pwd)
+```
+
 上传文件方式:
 ```bash
 curl http://ip:port/doupload -F "file=@文件名"
