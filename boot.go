@@ -136,9 +136,25 @@ const style = `
 </style>
 `
 
-const script = `<script>
+const script = `
+<style>
+a {
+	margin-top: 10px;
+	padding-top: 10px;
+	line-height: 20px;
+}
+
+body {
+	padding: 30px;
+}
+
+pre {
+	margin-top: 10px;
+	padding-top: 10px;
+}
+</style>
+<script>
     var bodyHtml = document.body.innerHTML
-    // document.body.innerHTML = "<h1>this is my new upload</h1>"
     var uploadLink = document.createElement("a")
     uploadLink.href = "/upload"
     let newContent = document.createTextNode("点击上传文件");
@@ -206,7 +222,7 @@ func main() {
 		http.ServeFile(writer, request, dir+request.URL.Path)
 		url := request.URL.Path
 		if url[len(url)-1] == '/' {
-			io.WriteString(writer, style)
+			// io.WriteString(writer, style)
 			io.WriteString(writer, script)
 		}
 	})
