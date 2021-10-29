@@ -154,11 +154,18 @@ pre {
 }
 </style>
 <script>
-    var bodyHtml = document.body.innerHTML
-    var uploadLink = document.createElement("a")
-    uploadLink.href = "/upload"
-    let newContent = document.createTextNode("点击上传文件");
-    uploadLink.appendChild(newContent);
+	function back() {
+		window.location.href = "/upload";
+	}
+    var bodyHtml = document.body.innerHTML;
+    var uploadLink = document.createElement("input");
+	uploadLink.type = "button";
+	uploadLink.value = "点击上传文件"
+    //uploadLink.href = "/upload";
+	uploadLink.onclick = back;
+	
+    //let newContent = document.createTextNode("点击上传文件");
+    //uploadLink.appendChild(newContent);
     document.body.insertBefore(uploadLink, document.body.getElementsByTagName("pre")[0])
 </script>`
 
