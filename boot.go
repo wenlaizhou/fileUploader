@@ -34,9 +34,9 @@ const uploadHtml = `<h1>Storage Service</h1>
 	</a>
 </h2>
 <br>
-<h4>
-	<a style="color: #888; text-decoration: none;" href="/">查看目录</a>
-</h4>
+<h3>
+	<a style="color: #888; text-decoration: none;" href="/">回到首页</a>
+</h3>
 <br>
 <br>
 <form action="/doupload" method="post" enctype="multipart/form-data">
