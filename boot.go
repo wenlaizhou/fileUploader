@@ -268,6 +268,23 @@ func main() {
 			writer.Write(res)
 			return
 		}
+		data, err := ioutil.ReadAll(request.Body)
+		if err != nil {
+			result["code"] = -1
+			result["message"] = err.Error()
+			res, _ := json.Marshal(result)
+			writer.WriteHeader(200)
+			writer.Write(res)
+			return
+		}
+		ioutil.WriteFile(filename, data, os.ModePerm)
+		result["code"] = 0
+		result["message"] = "done"
+		result["data"] = filename
+		res, _ := json.Marshal(result)
+		writer.WriteHeader(200)
+		writer.Write(res)
+		return
 	})
 
 	log.Fatal(http.ListenAndServe(port, nil))
