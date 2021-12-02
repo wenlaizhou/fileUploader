@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -254,6 +255,19 @@ func main() {
 		_ = ioutil.WriteFile(fileName, fileContent, os.ModePerm)
 		http.Redirect(writer, request, "/", http.StatusFound)
 		return
+	})
+
+	http.HandleFunc("/postUpload", func(writer http.ResponseWriter, request *http.Request) {
+		result := map[string]interface{}{}
+		filename := request.Header.Get("filename")
+		if len(filename) <= 0 {
+			result["code"] = -1
+			result["message"] = "no filename header"
+			res, _ := json.Marshal(result)
+			writer.WriteHeader(200)
+			writer.Write(res)
+			return
+		}
 	})
 
 	log.Fatal(http.ListenAndServe(port, nil))
