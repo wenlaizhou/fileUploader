@@ -217,8 +217,7 @@ func main() {
 	}
 	fmt.Println("服务目录: ", dir)
 	println("启动服务:")
-	println("http://" + netAddr + port)
-
+	fmt.Printf("http://%v%v/upload\n", netAddr, port)
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Access-Control-Allow-Origin", "*")
 		writer.Header().Set("Access-Control-Allow-Methods", "POST,GET,OPTIONS,DELETE")
