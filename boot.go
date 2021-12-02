@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"mime"
 	"net"
 	"net/http"
 	"os"
@@ -287,12 +288,26 @@ func main() {
 	})
 
 	http.HandleFunc("/getFile", func(writer http.ResponseWriter, request *http.Request) {
+		const sniffLen = 512
 		filename := request.URL.Query().Get("name")
 		if len(filename) <= 0 {
 			writer.WriteHeader(404)
 			return
 		}
-		http.ServeFile(writer, request, filename)
+		data, err := ioutil.ReadFile(filename)
+
+		if err != nil || len(data) <= 0 {
+			writer.WriteHeader(404)
+			return
+		}
+
+		ctype := mime.TypeByExtension(filepath.Ext(filename))
+		if ctype == "" && len(data) > sniffLen {
+			// read a chunk to decide between utf-8 text and binary
+			ctype = http.DetectContentType(data[:sniffLen])
+		}
+		writer.Header().Set("Content-Type", ctype)
+		writer.Write(data)
 		return
 	})
 
