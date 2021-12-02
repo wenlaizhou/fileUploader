@@ -277,7 +277,7 @@ func main() {
 			writer.Write(res)
 			return
 		}
-		ioutil.WriteFile(filename, data, os.ModePerm)
+		ioutil.WriteFile(fmt.Sprintf("%v/%v", dir, filename), data, os.ModePerm)
 		result["code"] = 0
 		result["message"] = "done"
 		result["data"] = filename
@@ -294,9 +294,12 @@ func main() {
 			writer.WriteHeader(404)
 			return
 		}
-		data, err := ioutil.ReadFile(filename)
+		data, err := ioutil.ReadFile(fmt.Sprintf("%v/%v", dir, filename))
 
 		if err != nil || len(data) <= 0 {
+			if err != nil {
+				println(err.Error())
+			}
 			writer.WriteHeader(404)
 			return
 		}
