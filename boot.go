@@ -286,6 +286,16 @@ func main() {
 		return
 	})
 
+	http.HandleFunc("/getFile", func(writer http.ResponseWriter, request *http.Request) {
+		filename := request.URL.Query().Get("name")
+		if len(filename) <= 0 {
+			writer.WriteHeader(404)
+			return
+		}
+		http.ServeFile(writer, request, filename)
+		return
+	})
+
 	log.Fatal(http.ListenAndServe(port, nil))
 }
 
