@@ -18,3 +18,6 @@ RUN cd /usr/local && ls
 RUN cd /usr/local && go build boot.go
 
 CMD /usr/local/boot
+
+# docker build . -t storage
+# docker run -d -p 9090:8080 -v /data/storage/:/data/ storage /usr/local/boot 8080 /data
