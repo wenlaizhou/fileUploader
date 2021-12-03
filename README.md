@@ -41,10 +41,12 @@ http://ip:port/upload
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
+	"mime"
 	"net"
 	"net/http"
 	"os"
@@ -256,8 +258,7 @@ func main() {
 	}
 	fmt.Println("服务目录: ", dir)
 	println("启动服务:")
-	println("http://" + netAddr + port)
-
+	fmt.Printf("http://%v%v/upload\n", netAddr, port)
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Access-Control-Allow-Origin", "*")
 		writer.Header().Set("Access-Control-Allow-Methods", "POST,GET,OPTIONS,DELETE")
@@ -293,6 +294,63 @@ func main() {
 		}
 		_ = ioutil.WriteFile(fileName, fileContent, os.ModePerm)
 		http.Redirect(writer, request, "/", http.StatusFound)
+		return
+	})
+
+	http.HandleFunc("/postUpload", func(writer http.ResponseWriter, request *http.Request) {
+		result := map[string]interface{}{}
+		filename := request.Header.Get("filename")
+		if len(filename) <= 0 {
+			result["code"] = -1
+			result["message"] = "no filename header"
+			res, _ := json.Marshal(result)
+			writer.WriteHeader(200)
+			writer.Write(res)
+			return
+		}
+		data, err := ioutil.ReadAll(request.Body)
+		if err != nil {
+			result["code"] = -1
+			result["message"] = err.Error()
+			res, _ := json.Marshal(result)
+			writer.WriteHeader(200)
+			writer.Write(res)
+			return
+		}
+		ioutil.WriteFile(fmt.Sprintf("%v/%v", dir, filename), data, os.ModePerm)
+		result["code"] = 0
+		result["message"] = "done"
+		result["data"] = filename
+		res, _ := json.Marshal(result)
+		writer.WriteHeader(200)
+		writer.Write(res)
+		return
+	})
+
+	http.HandleFunc("/getFile", func(writer http.ResponseWriter, request *http.Request) {
+		const sniffLen = 512
+		filename := request.URL.Query().Get("name")
+		if len(filename) <= 0 {
+			writer.WriteHeader(404)
+			return
+		}
+		data, err := ioutil.ReadFile(fmt.Sprintf("%v/%v", dir, filename))
+
+		if err != nil || len(data) <= 0 {
+			if err != nil {
+				println(err.Error())
+			}
+			writer.WriteHeader(404)
+			return
+		}
+
+		ctype := mime.TypeByExtension(filepath.Ext(filename))
+		if ctype == "" && len(data) > sniffLen {
+			// read a chunk to decide between utf-8 text and binary
+			ctype = http.DetectContentType(data[:sniffLen])
+		}
+		writer.Header().Set("Content-Type", ctype)
+		writer.Write(data)
 		return
 	})
 
