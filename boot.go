@@ -31,18 +31,18 @@ const uploadUi = `<!DOCTYPE html>
 
 const uploadHtml = `<h1>Storage Service</h1>
 <br>
-<h2><a style="color: #888; text-decoration: none;" href="https://github.com/wenlaizhou/fileUploader" target="_blank">
-		FileUploader(Common Service)
+<h2><a style="color: #888; text-decoration: none;" href="/">
+		文件列表
 	</a>
 </h2>
 <br>
 <h3>
-	<a style="color: #888; text-decoration: none;" href="/">回到首页</a>
+	<a style="color: #888; text-decoration: none;" target="_blank" href="https://github.com/wenlaizhou/fileUploader">Source Code</a>
 </h3>
 <br>
 <br>
 <form action="/doupload" method="post" enctype="multipart/form-data">
-	<input class="fileBtn" style="width: 300px;" type="file" name="file">
+	<input class="fileBtn" style="width: 276px;" type="file" name="file">
 	<br>
 	<br>
 	<input type="submit" style="width: 300px;" class="submit" value="开始上传">
@@ -87,12 +87,11 @@ const style = `
 		}
 	}
 	.submit {
-		border-radius: 30px;
+		border-radius: 5px;
+		border-style: none;
 		color: #fff;
 		line-height: 1.5;
 		background-color: #d9534f;
-		border-color: #d43f3a;
-		display: inline-block;
 		padding: 6px 12px;
 		margin-bottom: 0;
 		font-size: 16px;
@@ -100,36 +99,20 @@ const style = `
 		text-align: center;
 		white-space: nowrap;
 		vertical-align: middle;
-		-ms-touch-action: manipulation;
-		touch-action: manipulation;
 		cursor: pointer;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
-		background-image: none;
 	}
 	.fileBtn {
-		border-radius: 30px;
+		border-radius: 5px;
 		background: #26B99A;
-		border: 1px solid #169F85;
+		border-style: none;
 		color: #fff;
-		line-height: 1.5;
-		display: inline-block;
 		padding: 6px 12px;
 		margin-bottom: 0;
 		font-size: 16px;
 		font-weight: normal;
 		text-align: center;
-		white-space: nowrap;
 		vertical-align: middle;
-		-ms-touch-action: manipulation;
-		touch-action: manipulation;
 		cursor: pointer;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
 	}
 	a {
 		color: black;
