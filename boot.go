@@ -221,8 +221,8 @@ const script = `  <body>
                       </td>
                     </tr>
                     <tr>
-                      <td class="aligncenter content-block">
-                        上传文件: curl %v/doupload -F "file=@文件名"
+                      <td class="content-block content-small">
+                        命令行上传: <br/>curl -v %v/doupload -F "file=@文件名"
                       </td>
                     </tr>
                   </table>
@@ -305,8 +305,8 @@ const uploadHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//E
                       </td>
                     </tr>
                     <tr>
-                      <td class="content-block">
-                        上传文件: curl %v/doupload -F "file=@文件名"
+                      <td class="content-block content-small">
+                        命令行上传: <br/>curl -v %v/doupload -F "file=@文件名"
                       </td>
                     </tr>
                   </table>
@@ -393,6 +393,10 @@ const style = `
     .content-block {
       padding: 0 0 20px;
     }
+	
+	.content-small {
+      font-size: 12px;
+	}
 
     .header {
       width: 100%;
