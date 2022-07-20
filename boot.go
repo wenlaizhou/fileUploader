@@ -15,125 +15,6 @@ import (
 	"strings"
 )
 
-const uploadUi = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>FileUploader</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    %s
-</head>
-<body>
-	%s
-</body>
-</html>
-`
-
-const uploadHtml = `<h1>Storage Service</h1>
-<br>
-<h2><a style="color: #888; text-decoration: none;" href="/">
-		文件列表
-	</a>
-</h2>
-<br>
-<h3>
-	<a style="color: #888; text-decoration: none;" target="_blank" href="https://github.com/wenlaizhou/fileUploader">Source Code</a>
-</h3>
-<br>
-<br>
-<form action="/doupload" method="post" enctype="multipart/form-data">
-	<input class="fileBtn" style="width: 276px;" type="file" name="file">
-	<br>
-	<br>
-	<input type="submit" style="width: 300px;" class="submit" value="开始上传">
-</form>`
-
-const style = `
-<style>
-	* {
-		line-height: 1.2;
-		margin: 0;
-	}
-	html {
-		color: #888;
-		display: table;
-		font-family: sans-serif;
-		height: 100%;
-		text-align: center;
-		width: 100%;
-	}
-	body {
-		display: table-cell;
-		vertical-align: middle;
-		margin: 2em auto;
-	}
-	h1 {
-		color: #555;
-		font-size: 2em;
-		font-weight: 400;
-	}
-	p {
-		margin: 0 auto;
-		width: 280px;
-	}
-	@media only screen and (max-width: 280px) {
-		body,
-		p {
-			width: 95%;
-		}
-		h1 {
-			font-size: 1.5em;
-			margin: 0 0 0.3em;
-		}
-	}
-	.submit {
-		border-radius: 5px;
-		border-style: none;
-		color: #fff;
-		line-height: 1.5;
-		background-color: #d9534f;
-		padding: 6px 12px;
-		margin-bottom: 0;
-		font-size: 16px;
-		font-weight: normal;
-		text-align: center;
-		white-space: nowrap;
-		vertical-align: middle;
-		cursor: pointer;
-	}
-	.fileBtn {
-		border-radius: 5px;
-		background: #26B99A;
-		border-style: none;
-		color: #fff;
-		padding: 6px 12px;
-		margin-bottom: 0;
-		font-size: 16px;
-		font-weight: normal;
-		text-align: center;
-		vertical-align: middle;
-		cursor: pointer;
-	}
-	a {
-		color: black;
-		text-decoration: none;
-	}
-</style>
-`
-
-func SelfPath() string {
-	selfPath, _ := filepath.Abs(os.Args[0])
-	return selfPath
-}
-
-func SelfDir() string {
-	return filepath.Dir(SelfPath())
-}
-
-var ipReg = regexp.MustCompile("(\\d+\\.\\d+\\.\\d+\\.\\d+)/\\d+")
-
-var selfDir = SelfDir()
-
 func main() {
 	dir := SelfDir()
 	port := ":8080"
@@ -168,7 +49,8 @@ func main() {
 	}
 	fmt.Println("服务目录: ", dir)
 	println("启动服务:")
-	fmt.Printf("http://%v%v/upload\n", netAddr, port)
+	urlAddr := fmt.Sprintf("http://%v%v", netAddr, port)
+	println(urlAddr + "/upload\n")
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Access-Control-Allow-Origin", "*")
 		writer.Header().Set("Access-Control-Allow-Methods", "POST,GET,OPTIONS,DELETE")
@@ -181,12 +63,12 @@ func main() {
 		url := request.URL.Path
 		if url[len(url)-1] == '/' {
 			// io.WriteString(writer, style)
-			io.WriteString(writer, script)
+			io.WriteString(writer, fmt.Sprintf(script, urlAddr, style))
 		}
 	})
 
 	http.HandleFunc("/upload", func(writer http.ResponseWriter, request *http.Request) {
-		_, _ = writer.Write([]byte(fmt.Sprintf(uploadUi, style, uploadHtml)))
+		_, _ = writer.Write([]byte(fmt.Sprintf(uploadHtml, urlAddr, style)))
 		return
 	})
 
@@ -269,13 +151,26 @@ func main() {
 
 // 上传文件: curl http://ip:port/doupload -F "file=@文件名"
 
+func SelfPath() string {
+	selfPath, _ := filepath.Abs(os.Args[0])
+	return selfPath
+}
+
+func SelfDir() string {
+	return filepath.Dir(SelfPath())
+}
+
+var ipReg = regexp.MustCompile("(\\d+\\.\\d+\\.\\d+\\.\\d+)/\\d+")
+
+var selfDir = SelfDir()
+
 const script = `  <body>
     <table class="body-wrap">
       <tr>
         <td></td>
         <td class="container" width="600">
           <div class="content">
-            <table class="main" width="100%" cellpadding="0" cellspacing="0">
+            <table class="main" width="100%%" cellpadding="0" cellspacing="0">
               <tr>
                 <td class="alert alert-blue">
                   <strong style="font-size: 18px">文件列表</strong>
@@ -283,7 +178,7 @@ const script = `  <body>
               </tr>
               <tr>
                 <td class="content-wrap aligncenter">
-                  <table width="100%" cellpadding="0" cellspacing="0">
+                  <table width="100%%" cellpadding="0" cellspacing="0">
                     <!-- <tr>
                       <td class="content-block">
                         <h1>文件列表</h1>
@@ -311,7 +206,7 @@ const script = `  <body>
                               >
 
                                 <!-- <tr class="total">
-                                  <td class="alignright" width="80%">共</td>
+                                  <td class="alignright" width="80%%">共</td>
                                   <td class="alignright">99</td>
                                 </tr> -->
                               </table>
@@ -321,13 +216,13 @@ const script = `  <body>
                       </td>
                     </tr>
                     <tr>
-                      <td class="content-block">
+                      <td class="aligncenter content-block">
                         <a class="btn-primary" href="/upload">点击上传</a>
                       </td>
                     </tr>
                     <tr>
-                      <td class="content-block">
-                        <strong>上传文件: curl http://ip:port/doupload -F "file=@文件名"</strong>
+                      <td class="aligncenter content-block">
+                        上传文件: curl %v/doupload -F "file=@文件名"
                       </td>
                     </tr>
                   </table>
@@ -335,7 +230,7 @@ const script = `  <body>
               </tr>
             </table>
             <div class="footer">
-              <table width="100%">
+              <table width="100%%">
                 <tr>
                   <td class="aligncenter content-block">
                     Powered By @
@@ -363,19 +258,84 @@ const script = `  <body>
     document.getElementById("container").innerHTML = innerLinks
     
   </script>
-  <style>
-    /* -------------------------------------
-    GLOBAL
-------------------------------------- */
+  %v
+</html>
+`
+
+const uploadHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Storage Service</title>
+  </head>
+
+  <body>
+    <table class="body-wrap">
+      <tr>
+        <td></td>
+        <td class="container" width="600">
+          <div class="content">
+            <table class="main" width="100%%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td class="alert alert-blue">
+                  <strong style="font-size: 18px">Storage Service</strong>
+                </td>
+              </tr>
+              <tr>
+                <td class="content-wrap">
+                  <table width="100%%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td class="content-block">
+                        storage service is a <strong>object storage service</strong>
+                        by <strong>middleware framework</strong>
+                      </td>
+                    </tr>
+                    <tr>
+                        <td class="aligncenter content-block">
+                            <form action="/doupload" method="post" enctype="multipart/form-data">
+                                <input class="btn-primary" type="file" name="file">
+                                <input type="submit" class="btn-submit" value="开始上传">
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td class="content-block">
+                        <a href="/">查看文件列表</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="content-block">
+                        上传文件: curl %v/doupload -F "file=@文件名"
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            <div class="footer">
+              <table width="100%%">
+                <tr>
+                  <td class="aligncenter content-block">
+                    Powered By @ <a href="http://middleware.cyclone-robotics.com" target="_blank">Middleware Framework</a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </td>
+        <td></td>
+      </tr>
+    </table>
+  </body>
+%v
+</html>`
+
+const style = `
+<style>
     * {
       margin: 0;
       padding: 0;
-      /* font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; */
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
-        Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-        "Liberation Sans", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB",
-        "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, SimSun,
-        "WenQuanYi Zen Hei Sharp", sans-serif;
       box-sizing: border-box;
       font-size: 14px;
     }
@@ -392,14 +352,10 @@ const script = `  <body>
       line-height: 1.6;
     }
 
-    /* Let us make sure all tables have defaults */
     table td {
       vertical-align: top;
     }
 
-    /* -------------------------------------
-    BODY & CONTAINER
-------------------------------------- */
     body {
       background-color: #f6f6f6;
     }
@@ -424,9 +380,6 @@ const script = `  <body>
       padding: 20px;
     }
 
-    /* -------------------------------------
-    HEADER, FOOTER, MAIN
-------------------------------------- */
     .main {
       background: #fff;
       border: 1px solid #e9e9e9;
@@ -462,9 +415,6 @@ const script = `  <body>
       font-size: 12px;
     }
 
-    /* -------------------------------------
-    GRID AND COLUMNS
-------------------------------------- */
     .column-left {
       float: left;
       width: 50%;
@@ -475,9 +425,6 @@ const script = `  <body>
       width: 50%;
     }
 
-    /* -------------------------------------
-    TYPOGRAPHY
-------------------------------------- */
     h1,
     h2,
     h3 {
@@ -518,9 +465,6 @@ const script = `  <body>
       list-style-position: inside;
     }
 
-    /* -------------------------------------
-    LINKS & BUTTONS
-------------------------------------- */
     a {
       color: #348eda;
       text-decoration: none;
@@ -541,9 +485,21 @@ const script = `  <body>
       text-transform: capitalize;
     }
 
-    /* -------------------------------------
-    OTHER STYLES THAT MIGHT BE USEFUL
-------------------------------------- */
+    .btn-submit {
+      text-decoration: none;
+      color: #fff;
+      background-color: #d9534f;
+      border: solid #d9534f;
+      border-width: 3px 20px;
+      line-height: 2;
+      font-weight: bold;
+      text-align: center;
+      cursor: pointer;
+      display: inline-block;
+      border-radius: 5px;
+      text-transform: capitalize;
+    }
+
     .last {
       margin-bottom: 0;
     }
@@ -572,9 +528,6 @@ const script = `  <body>
       clear: both;
     }
 
-    /* -------------------------------------
-    Alerts
-------------------------------------- */
     .alert {
       font-size: 16px;
       color: #fff;
@@ -602,9 +555,6 @@ const script = `  <body>
       background: #348eda;
     }
 
-    /* -------------------------------------
-    INVOICE
-------------------------------------- */
     .invoice {
       margin: 40px auto;
       text-align: left;
@@ -625,9 +575,6 @@ const script = `  <body>
       font-weight: 700;
     }
 
-    /* -------------------------------------
-    RESPONSIVE AND MOBILE FRIENDLY STYLES
-------------------------------------- */
     @media only screen and (max-width: 640px) {
       h1,
       h2,
@@ -663,5 +610,4 @@ const script = `  <body>
       }
     }
   </style>
-</html>
 `
