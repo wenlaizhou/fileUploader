@@ -38,7 +38,6 @@ http://ip:port/upload
 
 
 ```go
-
 package main
 
 import (
