@@ -562,7 +562,7 @@ const style = `
     .invoice {
       margin: 40px auto;
       text-align: left;
-      width: 80%;
+      width: 90%;
     }
     .invoice td {
       padding: 5px 0;
