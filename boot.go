@@ -367,14 +367,14 @@ const style = `
 
     .container {
       display: block !important;
-      max-width: 600px !important;
+      max-width: 800px !important;
       margin: 0 auto !important;
       /* makes it centered */
       clear: both !important;
     }
 
     .content {
-      max-width: 600px;
+      max-width: 800px;
       margin: 0 auto;
       display: block;
       padding: 20px;
