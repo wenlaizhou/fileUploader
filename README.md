@@ -208,7 +208,7 @@ const script = `  <body>
     <table class="body-wrap">
       <tr>
         <td></td>
-        <td class="container" width="800">
+        <td class="container" width="600">
           <div class="content">
             <table class="main" width="100%%" cellpadding="0" cellspacing="0">
               <tr>
@@ -314,7 +314,7 @@ const uploadHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//E
     <table class="body-wrap">
       <tr>
         <td></td>
-        <td class="container" width="800">
+        <td class="container" width="600">
           <div class="content">
             <table class="main" width="100%%" cellpadding="0" cellspacing="0">
               <tr>
@@ -407,14 +407,14 @@ const style = `
 
     .container {
       display: block !important;
-      max-width: 600px !important;
+      max-width: 800px !important;
       margin: 0 auto !important;
       /* makes it centered */
       clear: both !important;
     }
 
     .content {
-      max-width: 600px;
+      max-width: 800px;
       margin: 0 auto;
       display: block;
       padding: 20px;
@@ -602,7 +602,7 @@ const style = `
     .invoice {
       margin: 40px auto;
       text-align: left;
-      width: 80%;
+      width: 90%;
     }
     .invoice td {
       padding: 5px 0;
