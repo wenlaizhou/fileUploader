@@ -168,7 +168,7 @@ const script = `  <body>
     <table class="body-wrap">
       <tr>
         <td></td>
-        <td class="container" width="600">
+        <td class="container" width="800">
           <div class="content">
             <table class="main" width="100%%" cellpadding="0" cellspacing="0">
               <tr>
@@ -274,7 +274,7 @@ const uploadHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//E
     <table class="body-wrap">
       <tr>
         <td></td>
-        <td class="container" width="600">
+        <td class="container" width="800">
           <div class="content">
             <table class="main" width="100%%" cellpadding="0" cellspacing="0">
               <tr>
